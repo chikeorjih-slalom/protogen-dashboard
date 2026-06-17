@@ -6,13 +6,59 @@ Add Vuetify 3 with Material Design Icons, install chart.js and vue-chartjs for d
 A single-page analytics dashboard showing monthly business metrics.
 Similar to Shopify admin of Google analytics
 
-## Data
-Generate a fake JSON dataset file (src/data/metrics.json)
-12 months of data (Jan-Dec 2025), each month containing:
-- revenue (dollar amount, trending upward with some variation)
-- visitors (number, seasonal pattern - higher in the summer)
-- conversions (percentage, fluctuates between 2-5%)
-- orders (number, correlates loosely with visitors)
+
+## Fake Data (Extended Dataset)
+
+Create an additional synthetic dataset that represents operational performance for a mid-size freight and supply chain company over a **3-year period (Jan 2023 – Dec 2025)**.
+
+Store in: `src/data/metrics.json`
+
+### Dataset Structure
+Each entry should represent a **monthly record** and include the following fields:
+
+- `month` (e.g., "2023-01")
+- `shipmentVolume` (integer, total shipments handled)
+- `onTimeDeliveryRate` (percentage, 85%–98%)
+- `regionalPerformance` (object with performance by region)
+  - `northAmerica`
+  - `europe`
+  - `asiaPacific`
+- `openExceptions` (integer, number of unresolved issues)
+
+---
+
+### Data Modeling Guidelines
+
+#### Shipment Volume
+- Range: ~8,000 to 25,000 shipments/month
+- Trend: Gradual growth year-over-year (~5–10% annually)
+- Seasonality:
+  - Higher in Q3–Q4 (peak shipping seasons, holidays)
+  - Slight dip in January/February
+- Include occasional dips/spikes due to realistic variability (weather, demand shifts)
+
+#### On-Time Delivery Rate
+- Range: 88% to 97%
+- Slight upward trend over time (operational improvements)
+- Minor drops during peak months (capacity strain)
+- Random small fluctuations month-to-month
+
+#### Regional Performance
+- Represented as percentages or indexed scores (85–98%)
+- Variation by region:
+  - **North America** → Most stable, consistent high performance
+  - **Europe** → Moderate variability
+  - **Asia Pacific** → More fluctuation due to longer routes and complexity
+- Optional: Slight seasonal or trend-based variation
+
+Example structure:
+```json
+"regionalPerformance": {
+  "northAmerica": 95,
+  "europe": 92,
+  "asiaPacific": 89
+}
+
 
 
 ## Interactions

@@ -2,15 +2,17 @@ import { computed, ref } from 'vue'
 import dataset from '@/data/metrics.json'
 import {
   METRICS,
+  REGIONS,
   type MetricKey,
   type MetricsDataset,
   type MonthMetric,
+  type RegionKey,
 } from '@/types/metrics'
-import { percentChange } from '@/utils/format'
+import { formatMonthLabel, percentChange } from '@/utils/format'
 
 const data = dataset as MetricsDataset
 
-export type RangeOption = 3 | 6 | 12
+export type RangeOption = 3 | 6 | 12 | 36
 
 export interface MetricSummary {
   key: MetricKey
@@ -24,17 +26,16 @@ export interface MetricSummary {
 
 export function useMetrics() {
   const range = ref<RangeOption>(12)
-  const activeMetric = ref<MetricKey>('revenue')
+  const activeMetric = ref<MetricKey>('shipmentVolume')
   const visibleMetrics = ref<Record<MetricKey, boolean>>({
-    revenue: true,
-    visitors: true,
-    conversions: true,
-    orders: true,
+    shipmentVolume: true,
+    onTimeDeliveryRate: true,
+    openExceptions: true,
   })
 
   const months = computed<MonthMetric[]>(() => data.months.slice(-range.value))
 
-  const labels = computed(() => months.value.map((m) => m.month))
+  const labels = computed(() => months.value.map((m) => formatMonthLabel(m.month)))
 
   const summaries = computed<Record<MetricKey, MetricSummary>>(() => {
     const result = {} as Record<MetricKey, MetricSummary>
@@ -56,6 +57,25 @@ export function useMetrics() {
     return result
   })
 
+  const regionalSeries = computed<Record<RegionKey, number[]>>(() => {
+    const result = {} as Record<RegionKey, number[]>
+    for (const region of REGIONS) {
+      result[region.key] = months.value.map(
+        (m) => m.regionalPerformance[region.key],
+      )
+    }
+    return result
+  })
+
+  const regionalLatest = computed<Record<RegionKey, number>>(() => {
+    const result = {} as Record<RegionKey, number>
+    for (const region of REGIONS) {
+      const series = regionalSeries.value[region.key]
+      result[region.key] = series[series.length - 1] ?? 0
+    }
+    return result
+  })
+
   function toggleMetric(key: MetricKey) {
     visibleMetrics.value[key] = !visibleMetrics.value[key]
   }
@@ -67,6 +87,8 @@ export function useMetrics() {
     months,
     labels,
     summaries,
+    regionalSeries,
+    regionalLatest,
     toggleMetric,
   }
 }

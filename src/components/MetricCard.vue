@@ -24,6 +24,10 @@ const value = computed(() => formatMetric(props.summary.latest, meta.value))
 const change = computed(() => props.summary.change)
 const changeLabel = computed(() => formatChange(change.value))
 const trendUp = computed(() => (change.value ?? 0) >= 0)
+/** Whether the change is favorable (accounts for metrics where up is bad). */
+const favorable = computed(() =>
+  meta.value.invertTrend ? !trendUp.value : trendUp.value,
+)
 
 const sparkData = computed<ChartData<'line'>>(() => ({
   labels: props.summary.series.map((_, i) => i),
@@ -66,7 +70,7 @@ const sparkOptions: ChartOptions<'line'> = {
       <v-chip
         size="x-small"
         variant="tonal"
-        :color="trendUp ? 'green' : 'red'"
+        :color="favorable ? 'green' : 'red'"
         class="font-weight-medium"
       >
         <v-icon

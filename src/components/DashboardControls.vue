@@ -16,6 +16,7 @@ const rangeOptions: { value: RangeOption; label: string }[] = [
   { value: 3, label: '3M' },
   { value: 6, label: '6M' },
   { value: 12, label: '12M' },
+  { value: 36, label: 'All' },
 ]
 </script>
 

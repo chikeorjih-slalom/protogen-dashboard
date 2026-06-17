@@ -5,6 +5,7 @@ import { METRICS, METRIC_MAP, type MetricKey } from '@/types/metrics'
 import MetricCard from '@/components/MetricCard.vue'
 import TrendChart from '@/components/TrendChart.vue'
 import MetricBarChart from '@/components/MetricBarChart.vue'
+import RegionalChart from '@/components/RegionalChart.vue'
 import DashboardControls from '@/components/DashboardControls.vue'
 
 const {
@@ -13,6 +14,7 @@ const {
   visibleMetrics,
   labels,
   summaries,
+  regionalSeries,
   toggleMetric,
 } = useMetrics()
 
@@ -35,11 +37,11 @@ function selectMetric(key: MetricKey) {
   <v-container class="dashboard py-6 py-md-8" max-width="1280">
     <header class="mb-6">
       <div class="d-flex align-center ga-2 mb-1">
-        <v-icon icon="mdi-chart-box-outline" color="primary" />
-        <h1 class="dashboard-title">Analytics Dashboard</h1>
+        <v-icon icon="mdi-truck-delivery-outline" color="primary" />
+        <h1 class="dashboard-title">Supply Chain Operations</h1>
       </div>
       <p class="dashboard-subtitle">
-        Monthly business performance · January – December 2025
+        Meridian Freight &amp; Supply Chain · monthly performance, Jan 2023 – Dec 2025
       </p>
     </header>
 
@@ -50,7 +52,7 @@ function selectMetric(key: MetricKey) {
         :key="meta.key"
         cols="12"
         sm="6"
-        lg="3"
+        lg="4"
       >
         <MetricCard
           :metric-key="meta.key"
@@ -75,7 +77,7 @@ function selectMetric(key: MetricKey) {
     <v-card class="pa-5 mt-6" border>
       <div class="d-flex align-center justify-space-between mb-4 flex-wrap ga-2">
         <div>
-          <h2 class="section-title">Trends over time</h2>
+          <h2 class="section-title">Operational trends</h2>
           <p class="section-sub">
             Highlighting <strong :style="{ color: activeMeta.color }">{{ activeMeta.label }}</strong> · click a card to switch
           </p>
@@ -89,18 +91,29 @@ function selectMetric(key: MetricKey) {
       />
     </v-card>
 
-    <!-- Breakdown bar chart -->
-    <v-card class="pa-5 mt-6 mb-4" border>
-      <h2 class="section-title mb-1">
-        {{ activeMeta.label }} by month
-      </h2>
-      <p class="section-sub mb-4">Monthly breakdown for the selected metric</p>
-      <MetricBarChart
-        :labels="labels"
-        :data="series[activeMetric]"
-        :metric-key="activeMetric"
-      />
-    </v-card>
+    <v-row class="mt-2">
+      <!-- Breakdown bar chart -->
+      <v-col cols="12" lg="6">
+        <v-card class="pa-5 mt-4" border height="100%">
+          <h2 class="section-title mb-1">{{ activeMeta.label }} by month</h2>
+          <p class="section-sub mb-4">Monthly breakdown for the selected metric</p>
+          <MetricBarChart
+            :labels="labels"
+            :data="series[activeMetric]"
+            :metric-key="activeMetric"
+          />
+        </v-card>
+      </v-col>
+
+      <!-- Regional performance -->
+      <v-col cols="12" lg="6">
+        <v-card class="pa-5 mt-4" border height="100%">
+          <h2 class="section-title mb-1">Regional performance</h2>
+          <p class="section-sub mb-4">On-time performance index by region (%)</p>
+          <RegionalChart :labels="labels" :series="regionalSeries" />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

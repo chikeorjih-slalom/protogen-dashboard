@@ -16,8 +16,8 @@ function toggleTheme() {
   <v-app>
     <v-app-bar flat border="b" height="60">
       <v-app-bar-title class="brand">
-        <v-icon icon="mdi-pulse" color="primary" class="mr-1" />
-        Protogen Analytics
+        <v-icon icon="mdi-truck-fast-outline" color="primary" class="mr-1" />
+        Meridian Freight
       </v-app-bar-title>
       <template #append>
         <v-btn

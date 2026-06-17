@@ -1,11 +1,5 @@
 import type { MetricMeta } from '@/types/metrics'
 
-const currencyFmt = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 0,
-})
-
 const numberFmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 })
 
 const compactFmt = new Intl.NumberFormat('en-US', {
@@ -13,9 +7,10 @@ const compactFmt = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 1,
 })
 
-export function formatCurrency(value: number): string {
-  return currencyFmt.format(value)
-}
+const MONTH_NAMES = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+]
 
 export function formatNumber(value: number): string {
   return numberFmt.format(value)
@@ -29,10 +24,16 @@ export function formatCompact(value: number): string {
   return compactFmt.format(value)
 }
 
+/** Converts an ISO "YYYY-MM" string to a short label like "Jan '23". */
+export function formatMonthLabel(month: string): string {
+  const [year = '', mon = ''] = month.split('-')
+  const idx = Number(mon) - 1
+  const name = MONTH_NAMES[idx] ?? mon
+  return `${name} '${year.slice(2)}`
+}
+
 export function formatMetric(value: number, meta: MetricMeta): string {
   switch (meta.format) {
-    case 'currency':
-      return formatCurrency(value)
     case 'percent':
       return formatPercent(value)
     default:
@@ -42,7 +43,6 @@ export function formatMetric(value: number, meta: MetricMeta): string {
 
 export function formatAxis(value: number, format: MetricMeta['format']): string {
   if (format === 'percent') return `${value}%`
-  if (format === 'currency') return `$${formatCompact(value)}`
   return formatCompact(value)
 }
 

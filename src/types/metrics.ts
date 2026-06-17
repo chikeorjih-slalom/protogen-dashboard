@@ -1,17 +1,24 @@
-export type MetricKey = 'revenue' | 'visitors' | 'conversions' | 'orders'
+export type MetricKey = 'shipmentVolume' | 'onTimeDeliveryRate' | 'openExceptions'
+
+export type RegionKey = 'northAmerica' | 'europe' | 'asiaPacific'
+
+export interface RegionalPerformance {
+  northAmerica: number
+  europe: number
+  asiaPacific: number
+}
 
 export interface MonthMetric {
   month: string
-  label: string
-  revenue: number
-  visitors: number
-  conversions: number
-  orders: number
+  shipmentVolume: number
+  onTimeDeliveryRate: number
+  openExceptions: number
+  regionalPerformance: RegionalPerformance
 }
 
 export interface MetricsDataset {
-  year: number
-  currency: string
+  company: string
+  period: string
   months: MonthMetric[]
 }
 
@@ -20,14 +27,28 @@ export interface MetricMeta {
   label: string
   color: string
   icon: string
-  format: 'currency' | 'number' | 'percent'
+  format: 'number' | 'percent'
+  /** When true, an increase is unfavorable (e.g. open exceptions). */
+  invertTrend?: boolean
+}
+
+export interface RegionMeta {
+  key: RegionKey
+  label: string
+  color: string
+  icon: string
 }
 
 export const METRICS: MetricMeta[] = [
-  { key: 'revenue', label: 'Revenue', color: '#16a34a', icon: 'mdi-currency-usd', format: 'currency' },
-  { key: 'visitors', label: 'Visitors', color: '#2563eb', icon: 'mdi-account-group', format: 'number' },
-  { key: 'conversions', label: 'Conversions', color: '#9333ea', icon: 'mdi-swap-horizontal-bold', format: 'percent' },
-  { key: 'orders', label: 'Orders', color: '#ea580c', icon: 'mdi-cart-outline', format: 'number' },
+  { key: 'shipmentVolume', label: 'Shipment Volume', color: '#2563eb', icon: 'mdi-truck-fast-outline', format: 'number' },
+  { key: 'onTimeDeliveryRate', label: 'On-Time Delivery', color: '#16a34a', icon: 'mdi-clock-check-outline', format: 'percent' },
+  { key: 'openExceptions', label: 'Open Exceptions', color: '#ea580c', icon: 'mdi-alert-circle-outline', format: 'number', invertTrend: true },
+]
+
+export const REGIONS: RegionMeta[] = [
+  { key: 'northAmerica', label: 'North America', color: '#2563eb', icon: 'mdi-earth' },
+  { key: 'europe', label: 'Europe', color: '#9333ea', icon: 'mdi-earth' },
+  { key: 'asiaPacific', label: 'Asia Pacific', color: '#0891b2', icon: 'mdi-earth' },
 ]
 
 export const METRIC_MAP: Record<MetricKey, MetricMeta> = METRICS.reduce(
@@ -36,4 +57,12 @@ export const METRIC_MAP: Record<MetricKey, MetricMeta> = METRICS.reduce(
     return acc
   },
   {} as Record<MetricKey, MetricMeta>,
+)
+
+export const REGION_MAP: Record<RegionKey, RegionMeta> = REGIONS.reduce(
+  (acc, r) => {
+    acc[r.key] = r
+    return acc
+  },
+  {} as Record<RegionKey, RegionMeta>,
 )
