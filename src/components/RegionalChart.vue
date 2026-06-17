@@ -21,7 +21,7 @@ const chartData = computed<ChartData<'line'>>(() => ({
     backgroundColor: `${region.color}22`,
     borderWidth: 2.5,
     fill: false,
-    tension: 0.4,
+    tension: 0,
     pointRadius: 0,
     pointHoverRadius: 5,
     pointHoverBackgroundColor: region.color,

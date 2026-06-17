@@ -32,7 +32,7 @@ const darkTheme = {
 
 export const vuetify = createVuetify({
   theme: {
-    defaultTheme: 'lightTheme',
+    defaultTheme: 'darkTheme',
     themes: { lightTheme, darkTheme },
   },
   icons: {

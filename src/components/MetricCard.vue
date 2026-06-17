@@ -38,7 +38,7 @@ const sparkData = computed<ChartData<'line'>>(() => ({
       backgroundColor: `${meta.value.color}22`,
       borderWidth: 2,
       fill: true,
-      tension: 0.4,
+      tension: 0,
       pointRadius: 0,
     },
   ],

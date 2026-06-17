@@ -32,7 +32,7 @@ const chartData = computed<ChartData<'line'>>(() => ({
       backgroundColor: `${meta.color}22`,
       borderWidth: isActive ? 3 : 1.5,
       fill: isActive,
-      tension: 0.4,
+      tension: 0,
       pointRadius: 0,
       pointHoverRadius: 5,
       pointHoverBackgroundColor: meta.color,

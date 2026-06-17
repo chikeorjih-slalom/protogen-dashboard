@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
 
 const theme = useTheme()
-const isDark = ref(false)
+const isDark = ref(true)
 
 function toggleTheme() {
   isDark.value = !isDark.value
