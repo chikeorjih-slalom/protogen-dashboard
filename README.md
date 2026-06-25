@@ -1,27 +1,48 @@
-# protogen-app
+# Meridian Freight — Supply Chain Operations Dashboard
 
-This template should help get you started developing with Vue 3 in Vite.
+A single-page analytics dashboard visualizing monthly operational performance for a mid-size freight & supply chain company over a 3-year period (Jan 2023 – Dec 2025). Built with Vue 3, TypeScript, Vuetify 3, and Chart.js.
 
-## Recommended IDE Setup
+## Features
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **Key operational metrics** — Shipment Volume, On-Time Delivery Rate, and Open Exceptions, each shown as a card with a sparkline and month-over-month change (exception increases are flagged as unfavorable).
+- **Interactive trend chart** — switch the highlighted metric by clicking a card; hover for exact monthly values.
+- **Monthly breakdown** — bar chart of the selected metric.
+- **Regional performance** — multi-line chart comparing North America, Europe, and Asia Pacific.
+- **Time range selector** — view the last 3, 6, 12, or all 36 months.
+- **Metric filters** — show/hide individual metrics on the trend chart.
+- **Responsive layout** — cards and charts reflow for tablet and mobile.
+- **Dark mode by default**, with a toggle in the app bar.
 
-## Recommended Browser Setup
+## Tech Stack
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- **Framework:** Vue 3 (Composition API) + TypeScript
+- **Routing:** Vue Router
+- **UI:** Vuetify 3 with Material Design Icons
+- **Charts:** Chart.js via vue-chartjs
+- **Build tool:** Vite
 
-## Type Support for `.vue` Imports in TS
+## Data
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+A static dataset lives at [`src/data/metrics.json`](src/data/metrics.json) with 36 monthly records. Each entry includes:
 
-## Customize configuration
+- `month` — ISO `YYYY-MM`
+- `shipmentVolume` — total shipments handled
+- `onTimeDeliveryRate` — percentage
+- `openExceptions` — unresolved issues
+- `regionalPerformance` — performance index by region (`northAmerica`, `europe`, `asiaPacific`)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Project Structure
+
+```
+src/
+├── components/      # MetricCard, TrendChart, MetricBarChart, RegionalChart, DashboardControls
+├── views/           # DashboardView
+├── composables/     # useMetrics (state, derived series, summaries)
+├── data/            # metrics.json
+├── plugins/         # vuetify + chart.js registration
+├── types/           # metric and region definitions
+└── utils/           # number/percent/date formatting helpers
+```
 
 ## Project Setup
 
@@ -40,3 +61,7 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Recommended IDE Setup
+
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
