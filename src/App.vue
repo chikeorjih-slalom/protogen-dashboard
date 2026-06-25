@@ -1,14 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterView } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
+import { useAuth } from '@/composables/useAuth'
 
 const theme = useTheme()
 const isDark = ref(true)
+const router = useRouter()
+const { isAuthenticated, logout } = useAuth()
 
 function toggleTheme() {
   isDark.value = !isDark.value
   theme.global.name.value = isDark.value ? 'darkTheme' : 'lightTheme'
+}
+
+function signOut() {
+  logout()
+  router.replace({ name: 'login' })
 }
 </script>
 
@@ -24,6 +32,12 @@ function toggleTheme() {
           :icon="isDark ? 'mdi-weather-sunny' : 'mdi-weather-night'"
           variant="text"
           @click="toggleTheme"
+        />
+        <v-btn
+          v-if="isAuthenticated"
+          icon="mdi-logout"
+          variant="text"
+          @click="signOut"
         />
       </template>
     </v-app-bar>
